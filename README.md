@@ -1,71 +1,127 @@
-# 🧾 Sistema PDV com Fidelidade e Promoções
+# Sistema de Fidelidade - Backend API
 
-Projeto de Conclusão da Formação Front-End e Back-End  
-Entrega prevista: Setembro de 2025  
-Equipe: 6 back-end + 5 front-end
+API REST para sistema de fidelidade de clientes desenvolvida em Express.js com Supabase.
 
----
+## 🚀 Tecnologias
 
-## 📌 Descrição
+- **Express.js** - Framework web
+- **Supabase** - Banco de dados PostgreSQL
+- **JWT** - Autenticação
+- **Swagger** - Documentação da API
+- **Docker** - Containerização
+- **Jest** - Testes
 
-Este projeto é um sistema web responsivo voltado para comércios que desejam controlar clientes, pontuação de fidelidade, fluxo financeiro e envio de promoções automatizadas.  
-A aplicação possui acesso via desktop e celular, com funcionalidades pensadas para simplificar o dia a dia do pequeno varejista.
+## 👥 Equipe Backend
 
----
+| Desenvolvedor | Responsabilidade | Arquivos Principais |
+|---------------|------------------|-------------------|
+| **Geraldo** | Autenticação & Segurança | `src/routes/authRoutes.js`, `src/middleware/authMiddleware.js` |
+| **Fabio N.** | Gestão de Clientes | `src/routes/clientRoutes.js`, `src/models/Client.js` |
+| **Felipe F.** | Controle de Fidelidade | `src/routes/loyaltyRoutes.js`, `src/models/LoyaltyTransaction.js` |
+| **João Jacques** | Promoções & Comunicação | `src/routes/promotionRoutes.js`, `src/models/Promotion.js` |
+| **Helen** | Financeiro | `src/routes/financialRoutes.js`, `src/models/FinancialTransaction.js` |
+| **Jose Felipe** | Infraestrutura & Documentação | `Dockerfile`, `docker-compose.yml`, `.github/workflows/` |
 
-## 🚀 Funcionalidades (MVP)
+## 🛠️ Instalação
 
-- ✅ Login com autenticação JWT
-- ✅ Cadastro e gerenciamento de clientes
-- ✅ Sistema de pontos automático por valor gasto
-- ✅ Dashboard com ranking de clientes e KPIs
-- ✅ Módulo financeiro simples (entradas e saídas)
+1. **Clone o repositório**
+\`\`\`bash
+git clone <repository-url>
+cd fidelidade-backend
+\`\`\`
 
----
-
-## 🌱 Funcionalidades Futuras
-
-- [ ] Envio automatizado de promoções por WhatsApp e e-mail
-- [ ] Integração com aniversariantes
-- [ ] Cadastro de brindes por pontos
-- [ ] Relatórios PDF
-- [ ] Suporte offline com sincronização
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-### Front-End
-
-- React
-- CSS modules
-- React Router
-- Axios
-- Context API
-
-### Back-End
-
-- Java com Spring Boot
-- PostgreSQL
-- JWT Authentication
-- Swagger / OpenAPI
-- Docker
-
----
-
-## 🧪 Como Rodar o Projeto
-
-### Pré-requisitos
-
-- Node.js
-- Docker + Docker Compose
-- Java 17+
-- PostgreSQL
-
-### Front-End
-
-```bash
-cd frontend
+2. **Instale as dependências**
+\`\`\`bash
 npm install
+\`\`\`
+
+3. **Configure as variáveis de ambiente**
+\`\`\`bash
+cp .env.example .env
+# Edite o arquivo .env com suas configurações
+\`\`\`
+
+4. **Execute as migrações do banco**
+\`\`\`bash
+# Execute os arquivos SQL em database/migrations/ no Supabase
+\`\`\`
+
+5. **Inicie o servidor**
+\`\`\`bash
 npm run dev
-```
+\`\`\`
+
+## 🐳 Docker
+
+\`\`\`bash
+# Build da imagem
+npm run docker:build
+
+# Executar com Docker Compose
+docker-compose up -d
+\`\`\`
+
+## 📚 Documentação
+
+A documentação da API está disponível em:
+- **Desenvolvimento**: http://localhost:3000/api-docs
+- **Produção**: https://api.fidelidade.com/api-docs
+
+## 🧪 Testes
+
+\`\`\`bash
+# Executar todos os testes
+npm test
+
+# Executar testes em modo watch
+npm run test:watch
+\`\`\`
+
+## 📁 Estrutura do Projeto
+
+\`\`\`
+src/
+├── config/          # Configurações (database, swagger)
+├── middleware/      # Middlewares (auth, validation, error)
+├── models/          # Modelos de dados
+├── routes/          # Rotas da API
+├── utils/           # Utilitários e helpers
+└── server.js        # Arquivo principal
+
+database/
+├── migrations/      # Migrações do banco
+└── seeds/          # Dados iniciais
+
+tests/              # Testes automatizados
+\`\`\`
+
+## 🔐 Autenticação
+
+A API utiliza JWT (JSON Web Tokens) para autenticação. Inclua o token no header:
+
+\`\`\`
+Authorization: Bearer <seu-jwt-token>
+\`\`\`
+
+## 📊 Monitoramento
+
+- **Health Check**: `GET /health`
+- **Logs**: Disponíveis em `logs/`
+- **Métricas**: Implementar com Prometheus (futuro)
+
+## 🚀 Deploy
+
+O deploy é automatizado via GitHub Actions para:
+- **Staging**: Branch `develop`
+- **Produção**: Branch `main`
+
+## 📝 Contribuição
+
+1. Crie uma branch para sua feature: `git checkout -b feature/nome-da-feature`
+2. Faça commit das mudanças: `git commit -m 'Add: nova feature'`
+3. Push para a branch: `git push origin feature/nome-da-feature`
+4. Abra um Pull Request
+
+## 📞 Suporte
+
+Para dúvidas ou problemas, entre em contato com a equipe backend.
