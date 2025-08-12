@@ -34,43 +34,26 @@ export function Tabs() {
 
             <div className={styles.tabContent}>
                 {tabAtiva === "transacoes" && (
-                    <div className={styles.containerLastTransactions}>
+                    <>
                         <Header title="Últimas Transações" subtitle="Histórico de entradas e saídas" size="small" />
-                        <div className={styles.transactionItem}>
-                            <TransactionItem
-                                title="Venda #001"
-                                category='vendas'
-                                date='12/08/2025'
-                                amount={150}
-                            />
-                            <TransactionItem
-                                title="Compra de Estoque"
-                                category='estoque'
-                                date='12/08/2025'
-                                amount={-500}
-                            />
-                            <TransactionItem
-                                title="Venda #002"
-                                category='vendas'
-                                date='12/08/2025'
-                                amount={150}
-                            />
-                            <TransactionItem
-                                title="Aluguel"
-                                category='Despesas'
-                                date='12/08/2025'
-                                amount={-1200}
-                            />
-
+                        <div className={styles.containerLastTransactions}>
+                            <TransactionItem title="Venda #001" category="vendas" date="12/08/2025" amount={150} />
+                            <TransactionItem title="Compra de estoque" category="estoque" date="12/08/2025" amount={-500} />
+                            <TransactionItem title="Venda #002" category="vendas" date="12/08/2025" amount={89.90} />
+                            <TransactionItem title="Aluguel" category="despesas" date="12/08/2025" amount={-1200} />
                         </div>
-                    </div>
+                    </>
                 )}
                 {tabAtiva === "graficos" && (
-                    <div>
-                        <TransactionList />
-                    </div>
+                    <>
+                        <Header title="Lucro vs Prejuízo" subtitle="Comparativo mensal dos últimos 6 meses" size="small" />
+                        <div className={styles.containerLastTransactions}>
+                            <TransactionList />
+                        </div>
+
+                    </>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

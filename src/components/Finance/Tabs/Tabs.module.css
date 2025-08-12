@@ -26,15 +26,16 @@
 }
 
 .tabContent {
-  margin-top: 16px;
-  opacity: 0;
-  transform: translateY(4px);
-  animation: fadeIn 0.3s ease forwards;
+  margin-top: 2rem;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .containerLastTransactions {
-  border: 1px solid #eee;
-  padding: 2rem;
+  margin-top: 1rem;
 }
 
 .transactionItem {

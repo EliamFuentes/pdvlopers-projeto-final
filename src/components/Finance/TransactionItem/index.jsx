@@ -8,9 +8,9 @@ export function TransactionItem({ title, category, date, amount }) {
         <div className={styles.item}>
             <div className={`${styles.iconWrapper} ${isPositive ? styles.incomeBg : styles.expenseBg}`}>
                 {isPositive ? (
-                    <FaArrowTrendUp className={styles.iconIncome} size={18} />
+                    <FaArrowTrendUp className={styles.iconIncome} size={14} />
                 ) : (
-                    <FaArrowTrendDown className={styles.iconExpense} size={18} />
+                    <FaArrowTrendDown className={styles.iconExpense} size={14} />
                 )}
             </div>
             <div className={styles.details}>

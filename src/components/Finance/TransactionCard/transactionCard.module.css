@@ -3,12 +3,18 @@
     border-radius: 10px;
     padding: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    width: 100%;
     max-width: 240px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.2s ease;
+
+    flex: 1 1 250px;
+    /* Cresce, encolhe, com tamanho base 250px */
+    max-width: 100%;
+    /* Não ultrapassa 100% do container */
+    min-width: 200px;
+    /* Tamanho mínimo para os cards */
 }
 
 .card:hover {
