@@ -10,11 +10,8 @@
     transition: transform 0.2s ease;
 
     flex: 1 1 250px;
-    /* Cresce, encolhe, com tamanho base 250px */
     max-width: 100%;
-    /* Não ultrapassa 100% do container */
     min-width: 200px;
-    /* Tamanho mínimo para os cards */
 }
 
 .card:hover {
