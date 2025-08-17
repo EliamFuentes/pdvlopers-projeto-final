@@ -5,10 +5,12 @@ import { Header } from "../../components/Finance/Header";
 import { TabContent } from "../../components/Finance/TabContent";
 import { MessageContent } from "../../components/Messages/MessageContent";
 import { SendMessages } from "../../components/Messages/SendMessages";
+import { BirthdayItem } from "../../components/Messages/BirthdayItem";
 
 import { FiMessageCircle } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
-import { BirthdayItem } from "../../components/Messages/BirthdayItem";
+import { IoGiftOutline } from "react-icons/io5";
+import { MessageHistory } from "../../components/Messages/MessageHistory";
 
 
 export function Messages() {
@@ -38,13 +40,18 @@ export function Messages() {
 
         aniversariantes: (
             <TabContent title="Aniversariantes do Mês" subtitle="Clientes que fazem aniversário este mês">
-                <BirthdayItem />
+                <div className={styles.birthdayItens}>
+                    <BirthdayItem icon={<IoGiftOutline />} name="João Silva" date={new Date(1995, 7, 16)} phoneNumber="(11) 99999-9999" email="joao@gmail.com" />
+                    <BirthdayItem icon={<IoGiftOutline />} name="João Silva" date={new Date(1995, 7, 16)} phoneNumber="(11) 99999-9999" email="joao@gmail.com" />
+                    <BirthdayItem icon={<IoGiftOutline />} name="João Silva" date={new Date(1995, 7, 16)} phoneNumber="(11) 99999-9999" email="joao@gmail.com" />
+                    <BirthdayItem icon={<IoGiftOutline />} name="João Silva" date={new Date(1995, 7, 16)} phoneNumber="(11) 99999-9999" email="joao@gmail.com" />
+                </div>
             </TabContent>
         ),
 
         historico: (
             <TabContent title="Histórico de Envios" subtitle="Campanhas e mensagens enviadas">
-
+                <MessageHistory />
             </TabContent>
         ),
     };
