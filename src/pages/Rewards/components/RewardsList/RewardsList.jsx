@@ -1,8 +1,12 @@
-﻿import styles from './RewardsList.module.css';
+﻿import { useState } from 'react';
+import styles from './RewardsList.module.css';
 import { Gift } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
+import { ModalRewardsList } from './ModalRewardsList';
+import { RewardForm } from '../RewardForm/RewardForm';
 
 export const RewardsList = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const rewardsList = [
     { id: 1, name: "Desconto 10%", points: 100, available: true },
     { id: 2, name: "Produto Grátis", points: 250, available: true },
@@ -10,7 +14,13 @@ export const RewardsList = () => {
     { id: 4, name: "Brinde Especial", points: 1000, available: false },
   ];
 
-  const navigate = useNavigate();
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -18,7 +28,7 @@ export const RewardsList = () => {
         <h3 className={styles.title}>Recompensas Disponíveis</h3>
 
         {/* Botão */}
-        <div className={styles.newRewardButton} onClick={() => navigate("new-reward")}>
+        <div className={styles.newRewardButton} onClick={handleOpenModal}>
           <Gift className={styles.icon} />
           <button className={styles.button}>
             Nova Recompensa
@@ -54,6 +64,15 @@ export const RewardsList = () => {
           </div>
         ))}
       </div>
+
+      {/* Modal com o formulário */}
+      <ModalRewardsList 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        title="Nova Recompensa"
+      >
+        <RewardForm onClose={handleCloseModal} />
+      </ModalRewardsList>
     </div>
   );
 };

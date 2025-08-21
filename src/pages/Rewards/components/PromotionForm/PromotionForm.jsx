@@ -1,23 +1,19 @@
-﻿import { useNavigate } from 'react-router-dom';
-import styles from './PromotionForm.module.css';
+﻿import styles from './PromotionForm.module.css';
 
-export const PromotionForm = () => {
-  const navigate = useNavigate();
-
+export const PromotionForm = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Lógica para criar a promoção
-    navigate('/rewards/promotions'); // Volta para a página anterior (lista de promoções)
+    console.log('Promoção criada!');
+    onClose(); // Fecha o modal após criar
   };
 
   const handleCancel = () => {
-    navigate('/rewards/promotions'); // Volta para a lista após criar
+    onClose(); // Fecha o modal sem salvar
   };
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Nova Promoção</h3>
-      
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label className={styles.label}>Nome da Promoção</label>

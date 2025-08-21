@@ -1,8 +1,12 @@
-﻿import styles from './PromotionsList.module.css';
+﻿import { useState } from 'react';
+import styles from './PromotionsList.module.css';
 import { Trophy } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
+import { ModalPromotionList } from './ModalPromotionList';
+import { PromotionForm } from '../PromotionForm/PromotionForm';
 
 export const PromotionsList = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const promotions = [
     {
       name: "Dobro de Pontos",
@@ -19,13 +23,20 @@ export const PromotionsList = () => {
       status: "Ativa"
     }
   ];
-  
-  const navigate = useNavigate();
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h3 className={styles.title}>Promoções Ativas</h3>
-        <div className={styles.newPromotionButton} onClick={() => navigate("new-promotion")}> 
+        <div className={styles.newPromotionButton} onClick={handleOpenModal}> 
           <Trophy className={styles.icon} />
           <button className={styles.button}>
             Nova Promoção 
@@ -69,6 +80,15 @@ export const PromotionsList = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal com o formulário */}
+      <ModalPromotionList 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        title="Nova Promoção"
+      >
+        <PromotionForm onClose={handleCloseModal} />
+      </ModalPromotionList>
     </div>
   );
 };

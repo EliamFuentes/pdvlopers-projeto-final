@@ -1,9 +1,7 @@
 ﻿import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './RewardForm.module.css';
 
-export const RewardForm = () => {
-  const navigate = useNavigate();
+export const RewardForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -26,17 +24,15 @@ export const RewardForm = () => {
     e.preventDefault();
     // Lógica para criar a recompensa
     console.log('Dados da recompensa:', formData);
-    navigate('/rewards/catalog'); // Volta para o catálogo
+    onClose(); // Fecha o modal após criar
   };
 
   const handleCancel = () => {
-    navigate('/rewards/catalog');
+    onClose(); // Fecha o modal sem salvar
   };
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Nova Recompensa</h3>
-      
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label className={styles.label}>Nome da Recompensa<span>*</span></label>
