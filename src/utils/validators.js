@@ -30,12 +30,10 @@ const redeemPointsSchema = Joi.object({
 // - name: nome do brinde (obrigatório).
 // - description: descrição opcional.
 // - points_required: quantidade de pontos necessária para resgatar o brinde (inteiro, positivo e obrigatório).
-// - active: indica se o brinde está ativo ou não (opcional, booleano).
 const rewardSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().allow(null, ""),
   points_required: Joi.number().integer().positive().required(),
-  active: Joi.boolean().optional(),
 });
 
 

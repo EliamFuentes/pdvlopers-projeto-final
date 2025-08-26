@@ -52,13 +52,13 @@ async function addPoints(req, res) {
 
 /**
  * Resgata pontos do cliente em troca de um brinde
- */
+    */
 async function redeemPoints(req, res) {
     // Valida entrada com Joi
     const { error: validationError } = redeemPointsSchema.validate(req.body);
     if (validationError) return res.status(400).json({ error: validationError.message });
 
-    const { clientId, points, rewardId, description } = req.body;
+    const { clientId, points, rewardId } = req.body;
 
     // Verifica se cliente existe
     const { data: client, error: clientError } = await findClientById(clientId);
@@ -67,23 +67,38 @@ async function redeemPoints(req, res) {
     // Checa se há saldo suficiente
     if (client.points_balance < points) return res.status(400).json({ error: "Saldo insuficiente" });
 
+    // Busca o brinde no banco
+    const { data: reward, error: rewardError } = await supabase
+        .from("rewards")
+        .select("id, description")
+        .eq("id", rewardId)
+        .single();
+
+    if (rewardError || !reward) return res.status(404).json({ error: "Brinde não encontrado" });
+
     // Calcula novo saldo
     const newBalance = client.points_balance - points;
 
     // Atualiza saldo no banco
     await updateClientPoints(clientId, newBalance);
 
-    // Registra a transação no histórico
+    // Registra a transação no histórico (usando a descrição do brinde)
     await addTransaction({
         client_id: clientId,
         type: TRANSACTION_TYPES.REDEEM,
         points,
         reward_id: rewardId,
-        description
+        description: reward.description
     });
 
-    res.status(201).json({ message: "Pontos resgatados", clientId, newBalance });
+    res.status(201).json({ 
+        message: "Pontos resgatados com sucesso", 
+        clientId, 
+        newBalance,
+        rewardDescription: reward.description
+    });
 }
+
 
 /**
  * Lista todos os brindes ativos
@@ -91,8 +106,7 @@ async function redeemPoints(req, res) {
 async function listRewards(req, res) {
     const { data, error } = await supabase
         .from("rewards")
-        .select("*")
-        .eq("active", true);
+        .select("*");
 
     if (error) return res.status(500).json({ error: "Erro ao buscar brindes" });
     res.json(data);
@@ -106,12 +120,12 @@ async function createReward(req, res) {
     const { error: validationError } = rewardSchema.validate(req.body);
     if (validationError) return res.status(400).json({ error: validationError.message });
 
-    const { name, description, points_required, active } = req.body;
+    const { name, description, points_required} = req.body;
 
     // Insere brinde no banco
     const { data, error } = await supabase
         .from("rewards")
-        .insert([{ name, description, points_required, active: active ?? true }])
+        .insert([{ name, description, points_required }])
         .select()
         .single();
 
