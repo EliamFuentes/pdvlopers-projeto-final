@@ -58,7 +58,7 @@
     color: #555;
 }
 
-.buttons {
+.containerButton {
     display: flex;
     gap: 0.5rem;
 }

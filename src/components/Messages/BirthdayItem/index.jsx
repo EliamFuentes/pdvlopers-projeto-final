@@ -1,11 +1,11 @@
 import styles from './BirthdayItem.module.css'
 
-//icones
 import { MdOutlineEmail } from "react-icons/md";
 import { FiMessageCircle } from "react-icons/fi";
+import { IoGiftOutline } from "react-icons/io5";
 
 
-export function BirthdayItem({ icon, name, date, phoneNumber, email }) {
+export function BirthdayItem({ name, date, phoneNumber, email }) {
     const formattedDate = date instanceof Date
         ? date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })
         : date;
@@ -15,7 +15,7 @@ export function BirthdayItem({ icon, name, date, phoneNumber, email }) {
             <div className={styles.item}>
                 <div className={styles.left}>
                     <div className={styles.iconWrapper}>
-                        <span className={styles.icon}>{icon}</span>
+                        <span className={styles.icon}><IoGiftOutline /></span>
                     </div>
 
                     <div className={styles.details}>
@@ -30,8 +30,7 @@ export function BirthdayItem({ icon, name, date, phoneNumber, email }) {
                     </div>
                 </div>
 
-                <div className={styles.buttons}>
-                    <button className={styles.button}><MdOutlineEmail /> Email</button>
+                <div className={styles.containerButton}>
                     <button className={styles.button}><FiMessageCircle /> WhatsApp</button>
                 </div>
             </div>
