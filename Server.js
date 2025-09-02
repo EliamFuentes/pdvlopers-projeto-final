@@ -5,7 +5,7 @@ import express from 'express';
 // Pacote de Segurança
 import  cors from 'cors';
 // Endpoints do módulo financeiro
-import financialRoutes from './src/routes/financialRoutes.js';
+import FinancialRoutes from './src/routes/financialRoutes.js';
 
 // Cria instância para aplicação Express
 const app = express();
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Conexão de rotas
-app.use('/api/finance', financialRoutes);
+app.use('/api/finance', FinancialRoutes);
 // Inicia servidor
 app.listen(PORT, () => {
     console.log(`API Financeira rodando na porta ${PORT}`);
