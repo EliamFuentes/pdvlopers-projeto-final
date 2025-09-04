@@ -3,9 +3,9 @@ import 'dotenv/config';
 // Framework express
 import express from 'express';
 // Pacote de Segurança
-import  cors from 'cors';
+import cors from 'cors';
 // Endpoints do módulo financeiro
-import financialRoutes from './src/routes/financialRoutes.js';
+import financialRoutes from './src/routes/FinancialRoutes.js';
 
 // Cria instância para aplicação Express
 const app = express();

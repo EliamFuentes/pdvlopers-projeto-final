@@ -8,8 +8,8 @@ import {
     deleteTransaction
 } from '../controllers/TransactionController.js';
 
-// Importa o controlador de relatórios que faremos a seguir
-// import { getSummary } from '../controllers/reportController.js';
+// Importa o controlador de relatórios 
+import { getSummary } from '../controllers/ReportController.js';
 
 const router = express.Router();
 
@@ -26,8 +26,7 @@ router.put('/transactions/:id', updateTransaction);
 router.delete('/transactions/:id', deleteTransaction);
 
 
-// --- ROTAS PARA OS RELATÓRIOS ---
-// (Esta parte será implementada a seguir)
-// router.get('/summary', getSummary);
+// Rota para o controlador de relatórios
+router.get('/summary', getSummary);
 
 export default router;
