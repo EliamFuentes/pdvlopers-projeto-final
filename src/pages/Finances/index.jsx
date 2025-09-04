@@ -1,9 +1,10 @@
+//styles
 import styles from "./finances.module.css";
-
+//hook
 import { useState } from "react";
-
+//Layout
 import { Layout } from "../../components/Layout/Layout";
-
+//components
 import { Button } from "../../components/Finance/Button";
 import { TransactionCard } from "../../components/Finance/TransactionCard";
 import { Tabs } from "../../components/Finance/Tabs";
@@ -12,11 +13,9 @@ import { TransactionItem } from "../../components/Finance/TransactionItem";
 import { TransactionList } from "../../components/Finance/TransactionList";
 import { Header } from "../../components/Finance/Header";
 import { TransactionModal } from "../../components/Finance/TransactionModal";
-
-import { FaPlus } from "react-icons/fa";
-import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+//icons
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { CiCalendar } from "react-icons/ci";
+import { LuCalendar, LuPlus, LuTrendingUp, LuTrendingDown } from "react-icons/lu";
 
 export function Finances() {
 
@@ -81,7 +80,7 @@ export function Finances() {
                         subtitle="Controle suas finanças e fluxo de caixa"
                     />
                     <div>
-                        <Button icon={<FaPlus />} text="Nova Transação" onClick={() => setShowModal(true)} />
+                        <Button icon={<LuPlus />} text="Nova Transação" onClick={() => setShowModal(true)} />
 
                         {showModal && (
                             <TransactionModal
@@ -99,14 +98,14 @@ export function Finances() {
                         title="Total Entradas"
                         amount={formatCurrency(totalEntradas)}
                         subtitle="Este mês"
-                        icon={<FaArrowTrendUp />}
+                        icon={<LuTrendingUp />}
                         color="green"
                     />
                     <TransactionCard
                         title="Total Saídas"
                         amount={formatCurrency(totalSaidas)}
                         subtitle="Este mês"
-                        icon={<FaArrowTrendDown />}
+                        icon={<LuTrendingDown />}
                         color="red"
                     />
                     <TransactionCard
@@ -120,7 +119,7 @@ export function Finances() {
                         title="Transações"
                         amount={totalTransacoes}
                         subtitle="Este mês"
-                        icon={<CiCalendar />}
+                        icon={<LuCalendar />}
                         color="black"
                     />
 
