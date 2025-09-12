@@ -104,6 +104,7 @@ export const RewardForm = ({ onClose, onAddReward }) => {
             <input 
               type="date" 
               name="validityDate"
+              min={new Date().toISOString().split('T')[0]}
               required
               className={styles.input}
               value={formData.validityDate}
