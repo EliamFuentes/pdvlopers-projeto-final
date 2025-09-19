@@ -22,6 +22,23 @@ export function Messages() {
         { id: 'historico', label: "Histórico" },
     ]
 
+    const mensagensEnviadas = [
+        {
+            id: 1,
+            title: "Promoção de Setembro",
+            type: "email",
+            numberRecipients: 120,
+            date: "2025-09-09"
+        },
+        {
+            id: 2,
+            title: "Lembrete de pontos",
+            type: "whatsapp",
+            numberRecipients: 45,
+            date: "2025-09-08"
+        }
+    ];
+
     const currentMonth = new Date().getMonth(); // Janeiro = 0, Fevereiro = 1, ...
 
     const aniversariantesDoMes = clients.filter(client => {
@@ -70,7 +87,7 @@ export function Messages() {
 
         historico: (
             <TabContent title="Histórico de Envios" subtitle="Campanhas e mensagens enviadas">
-                <MessageHistory />
+                <MessageHistory messages={mensagensEnviadas} />
             </TabContent>
         ),
     };

@@ -67,7 +67,7 @@ export function Finances() {
                 title="Lucro vs Prejuízo"
                 subtitle="Comparativo de transações dos últimos meses"
             >
-                <TransactionList periodo={periodo} setPeriodo={setPeriodo} />
+                <TransactionList periodo={periodo} setPeriodo={setPeriodo} transactions={transactions} />
             </TabContent>
         ),
     };
