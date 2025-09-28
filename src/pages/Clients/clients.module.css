@@ -11,7 +11,7 @@
     align-items: stretch;
     padding: 15px;
     font-family: Arial, sans-serif;
-    background-color: #fffffa;
+    /* background-color: #fffffa; */
     min-height: 100vh;
     box-sizing: border-box;
     padding-left: 17rem;
