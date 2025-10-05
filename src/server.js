@@ -22,10 +22,10 @@ function requireOne(...paths) {
 }
 
 // ---------- Segurança / Infra ----------
-app.use(helmet()); // se o Swagger reclamar de CSP, troque por: helmet({ contentSecurityPolicy: false })
+app.use(helmet()); // se o Swagger reclamar de CSP, use: helmet({ contentSecurityPolicy: false })
 app.use(compression());
 
-// CORS (suporta múltiplas origens via env FRONTEND_URL=dom1,dom2)
+// CORS (suporta múltiplas origens via FRONTEND_URL=dom1,dom2)
 const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3001")
   .split(",")
   .map(s => s.trim())
@@ -36,7 +36,7 @@ app.use(cors({
   credentials: true,
 }));
 
-// Rate limiting
+// Rate limiting global
 const limiter = rateLimit({
   windowMs: Number.parseInt(process.env.RATE_LIMIT_WINDOW_MS || `${15 * 60 * 1000}`, 10),
   max: Number.parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "100", 10),
@@ -51,7 +51,7 @@ app.use(express.urlencoded({ extended: true }));
 // ---------- Swagger ----------
 swaggerSetup(app);
 
-// ---------- Healthcheck ----------
+// ---------- Health / Root ----------
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
@@ -60,16 +60,23 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Rota raiz amigável (compat com back2clientes)
+app.get("/", (req, res) => {
+  res.send("API está no ar! Consulte /health e /api-docs para detalhes.");
+});
+
 // ---------- Rotas ----------
 const authRoutes = require("./routes/authRoutes");
-const clientRoutes = require("./routes/clientRoutes");
 const loyaltyRoutes = require("./routes/loyaltyRoutes");
 const promotionRoutes = require("./routes/promotionRoutes");
 const financialRoutes = require("./routes/financialRoutes");
 
+// Compatibilidade: tenta carregar client routes de clientRoutes OU clienteRoutes
+const clientRoutes = requireOne("./routes/clientRoutes", "./routes/clienteRoutes");
 
 app.use("/api/auth", authRoutes);
-app.use("/api/clients", clientRoutes);
+app.use("/api/clients", clientRoutes);    // caminho canônico
+app.use("/clientes", clientRoutes);        // compat com back2clientes
 app.use("/api/loyalty", loyaltyRoutes);
 app.use("/api/promotions", promotionRoutes);
 app.use("/api/financial", financialRoutes);
@@ -81,7 +88,7 @@ app.use(errorHandler);
 // ---------- Start ----------
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📚 Documentação disponível em http://localhost:${PORT}/api-docs`);
+  console.log(`📚 Documentação: http://localhost:${PORT}/api-docs`);
 });
 
 module.exports = app;

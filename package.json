@@ -1,7 +1,7 @@
 {
-  "name": "fidelidade-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Sistema de Fidelidade - Backend API",
+  "description": "Sistema Mercadinho - Backend API",
   "main": "src/server.js",
   "private": true,
   "scripts": {
@@ -16,7 +16,12 @@
     "swagger": "swagger-jsdoc -d swaggerDef.js src/routes/*.js -o swagger.json",
     "scheduler:birthday": "node src/scheduler/birthday.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
+
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
