@@ -1,7 +1,18 @@
-const express = require("express")
-const router = express.Router()
+// routes/authRoutes.js
+const express = require("express");
+const rateLimit = require("express-rate-limit");
+const router = express.Router();
 
-// Placeholder para rotas de autenticação (Back 1 - Geraldo)
+// Controllers
+const auth = require("../controllers/auth.controller");
+const twoFA = require("../controllers/2fa.controller");
+
+// Middleware (ajuste o caminho conforme sua árvore real)
+const authMiddleware = require("../middleware/authMiddleware");
+
+// Helper para propagar erros async ao errorHandler global
+const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+
 /**
  * @swagger
  * tags:
@@ -21,35 +32,35 @@ const router = express.Router()
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - email
- *               - password
- *               - name
+ *             required: [email, password, name]
  *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               name:
- *                 type: string
+ *               email: { type: string }
+ *               password: { type: string }
+ *               name: { type: string }
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
  */
-router.post("/register", (req, res) => {
-  res.json({ message: "Rota de registro - implementar (Geraldo)" })
-})
 
-router.post("/login", (req, res) => {
-  res.json({ message: "Rota de login - implementar (Geraldo)" })
-})
+// Limiter opcional específico para endpoints sensíveis (além do global)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
-router.post("/forgot-password", (req, res) => {
-  res.json({ message: "Rota de recuperação de senha - implementar (Geraldo)" })
-})
+// Rotas públicas
+router.post("/register", authLimiter, asyncHandler(auth.register));     // 201
+router.post("/login", authLimiter, asyncHandler(auth.login));           // 200 (retorna { accessToken, refreshToken, user })
+router.post("/forgot-password", authLimiter, asyncHandler(auth.forgotPassword));
+router.post("/refresh", asyncHandler(auth.refreshToken));
 
-router.post("/2fa/setup", (req, res) => {
-  res.json({ message: "Rota de setup 2FA - implementar (Geraldo)" })
-})
+// 2FA (mudar generate -> setup; POST pois gera segredo)
+router.post("/2fa/setup", authMiddleware, asyncHandler(twoFA.generate2FA));
+router.post("/2fa/verify", authMiddleware, asyncHandler(twoFA.verify2FA));
 
-module.exports = router
+// Rotas protegidas
+router.get("/me", authMiddleware, asyncHandler(auth.getMe));
+
+module.exports = router;

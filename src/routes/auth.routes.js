@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../controllers/auth.controller");
-const authMiddleware = require("../middlewares/auth.middleware");
+const authMiddleware = require("../middleware/authMiddleware");
 const twoFA = require("../controllers/2fa.controller");
 
 // Rotas públicas

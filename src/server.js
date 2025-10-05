@@ -61,11 +61,12 @@ app.get("/health", (req, res) => {
 });
 
 // ---------- Rotas ----------
-const authRoutes = requireOne("./routes/authRoutes", "./routes/auth.routes"); // compat
+const authRoutes = require("./routes/authRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const loyaltyRoutes = require("./routes/loyaltyRoutes");
 const promotionRoutes = require("./routes/promotionRoutes");
 const financialRoutes = require("./routes/financialRoutes");
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/clients", clientRoutes);
