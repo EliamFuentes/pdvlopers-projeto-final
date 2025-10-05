@@ -50,6 +50,7 @@ async function fetchClientesByIds(ids) {
 }
 
 /** Resolve audiência conforme segmento (retorna [{ id, nome, email, telefone }]) */
+/** Resolve audiência conforme segmento (retorna [{ id, nome, email, telefone }]) */
 async function getAudienceBySegment({ segment }) {
   if (segment === "ALL") {
     const { data, error } = await supabase
@@ -96,29 +97,27 @@ async function getAudienceBySegment({ segment }) {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - TIER_LIMITS.INACTIVE_DAYS);
 
-    // 1) última atividade por cliente: select com agregação
-    // PostgREST suporta agregações: select=client_id,max:created_at&group=client_id
-    const { data: lastTx, error: lastErr } = await supabase
+    // pega todas as transações ordenadas por data desc
+    const { data: txs, error: txErr } = await supabase
       .from("loyalty_transactions")
-      .select("client_id,max:created_at")
-      .group("client_id");
+      .select("client_id, created_at")
+      .order("created_at", { ascending: false });
+    if (txErr) throw txErr;
 
-    if (lastErr) throw lastErr;
+    // mapeia a última transação por cliente
+    const lastByClient = new Map();
+    (txs || []).forEach((row) => {
+      if (!lastByClient.has(row.client_id)) {
+        lastByClient.set(row.client_id, row.created_at);
+      }
+    });
 
-    // 2) pega todos os clientes
+    // busca todos os clientes
     const { data: allClientes, error: cliErr } = await supabase
       .from("clientes")
       .select("id, nome, email, telefone");
     if (cliErr) throw cliErr;
 
-    // 3) mapeia última atividade
-    const lastByClient = new Map();
-    (lastTx || []).forEach((r) => {
-      // r.max é o alias de created_at (max)
-      lastByClient.set(r.client_id, r.max);
-    });
-
-    // 4) inativos = quem não tem entrada OU max(created_at) < cutoff
     const inactive = (allClientes || []).filter((c) => {
       const last = lastByClient.get(c.id);
       if (!last) return true; // nunca pontuou
@@ -128,8 +127,11 @@ async function getAudienceBySegment({ segment }) {
     return inactive;
   }
 
+  // 👇 garante erro claro se vier algo fora da lista
   throw new Error("segment inválido");
 }
+
+
 
 // ---------- ROTAS LITERAIS PRIMEIRO (evitam colisão com /:id) ----------
 

@@ -13,7 +13,8 @@
     "test:watch": "jest --watch",
     "docker:build": "docker build -t fidelidade-api .",
     "docker:run": "docker run -p 3000:3000 fidelidade-api",
-    "swagger": "swagger-jsdoc -d swaggerDef.js src/routes/*.js -o swagger.json"
+    "swagger": "swagger-jsdoc -d swaggerDef.js src/routes/*.js -o swagger.json",
+    "scheduler:birthday": "node src/scheduler/birthday.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -43,7 +44,6 @@
     "@radix-ui/react-toast": "1.2.4",
     "@radix-ui/react-toggle": "1.1.1",
     "@radix-ui/react-toggle-group": "1.1.1",
-    "@radix-ui/react-tooltip": "1.1.6",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -71,9 +71,9 @@
     "lucide-react": "^0.454.0",
     "next": "14.2.25",
     "next-themes": "^0.4.6",
-    "react": "^19",
+    "react": "18.3.1",
     "react-day-picker": "9.8.0",
-    "react-dom": "^19",
+    "react-dom": "18.3.1",
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.4",
@@ -81,7 +81,9 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.9",
-    "zod": "3.25.67"
+    "zod": "3.25.67",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
@@ -97,6 +99,13 @@
     "supertest": "^6.3.3",
     "eslint": "^8.55.0",
     "prettier": "^3.1.1"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   },
   "keywords": ["express", "api", "fidelidade", "supabase"],
   "author": "Equipe Backend",
