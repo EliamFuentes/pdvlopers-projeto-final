@@ -1,63 +1,35 @@
-// src/routes/financialRoutes.js
-const express = require("express");
+import express from 'express';
+
+// Importação do CRUD
+import {
+    createTransaction,
+    getTransactions,
+    updateTransaction,
+    deleteTransaction
+} from '../controllers/TransactionController.js';
+
+// Importa o controlador de relatórios 
+import { getSummary, getSummaryByCategory } from '../controllers/ReportController.js';
+
 const router = express.Router();
 
-// carrega controllers ESM só quando necessários
-async function loadControllers() {
-    const tx = await import("../controllers/TransactionController.js");
-    const rep = await import("../controllers/ReportController.js");
-  return {
-    createTransaction: tx.createTransaction,
-    getTransactions: tx.getTransactions,
-    updateTransaction: tx.updateTransaction,
-    deleteTransaction: tx.deleteTransaction,
-    getSummary: rep.getSummary,
-    getSummaryByCategory: rep.getSummaryByCategory,
-  };
-}
+// Rota para criação de uma nova transação
+router.post('/transactions', createTransaction);
 
-// CRUD
-router.post("/transactions", async (req, res, next) => {
-  try {
-    const { createTransaction } = await loadControllers();
-    return createTransaction(req, res, next);
-  } catch (e) { next(e); }
-});
+// Rota para obtenção de todas as transações
+router.get('/transactions', getTransactions);
 
-router.get("/transactions", async (req, res, next) => {
-  try {
-    const { getTransactions } = await loadControllers();
-    return getTransactions(req, res, next);
-  } catch (e) { next(e); }
-});
+// Rota para atualização uma transação existente
+router.put('/transactions/:id', updateTransaction);
 
-router.put("/transactions/:id", async (req, res, next) => {
-  try {
-    const { updateTransaction } = await loadControllers();
-    return updateTransaction(req, res, next);
-  } catch (e) { next(e); }
-});
+// Rota para deleção de uma transação existente
+router.delete('/transactions/:id', deleteTransaction);
 
-router.delete("/transactions/:id", async (req, res, next) => {
-  try {
-    const { deleteTransaction } = await loadControllers();
-    return deleteTransaction(req, res, next);
-  } catch (e) { next(e); }
-});
 
-// Relatórios
-router.get("/summary", async (req, res, next) => {
-  try {
-    const { getSummary } = await loadControllers();
-    return getSummary(req, res, next);
-  } catch (e) { next(e); }
-});
+// Rota para o controlador de relatórios
+router.get('/summary', getSummary);
 
-router.get("/summary/by-category", async (req, res, next) => {
-  try {
-    const { getSummaryByCategory } = await loadControllers();
-    return getSummaryByCategory(req, res, next);
-  } catch (e) { next(e); }
-});
+// Rota para o sumário por categoria
+router.get('/summary/by-category', getSummaryByCategory);
 
-module.exports = router;
+export default router;
