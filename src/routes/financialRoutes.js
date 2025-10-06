@@ -1,32 +1,63 @@
-const express = require("express")
-const router = express.Router()
+// src/routes/financialRoutes.js
+const express = require("express");
+const router = express.Router();
 
-// Placeholder para rotas financeiras (Back 5 - Helen)
-/**
- * @swagger
- * tags:
- *   name: Financial
- *   description: Controle financeiro
- */
+// carrega controllers ESM só quando necessários
+async function loadControllers() {
+    const tx = await import("../controllers/TransactionController.js");
+    const rep = await import("../controllers/ReportController.js");
+  return {
+    createTransaction: tx.createTransaction,
+    getTransactions: tx.getTransactions,
+    updateTransaction: tx.updateTransaction,
+    deleteTransaction: tx.deleteTransaction,
+    getSummary: rep.getSummary,
+    getSummaryByCategory: rep.getSummaryByCategory,
+  };
+}
 
-router.get("/transactions", (req, res) => {
-  res.json({ message: "Listar transações - implementar (Helen)" })
-})
+// CRUD
+router.post("/transactions", async (req, res, next) => {
+  try {
+    const { createTransaction } = await loadControllers();
+    return createTransaction(req, res, next);
+  } catch (e) { next(e); }
+});
 
-router.post("/transactions", (req, res) => {
-  res.json({ message: "Criar transação - implementar (Helen)" })
-})
+router.get("/transactions", async (req, res, next) => {
+  try {
+    const { getTransactions } = await loadControllers();
+    return getTransactions(req, res, next);
+  } catch (e) { next(e); }
+});
 
-router.get("/reports/monthly", (req, res) => {
-  res.json({ message: "Relatório mensal - implementar (Helen)" })
-})
+router.put("/transactions/:id", async (req, res, next) => {
+  try {
+    const { updateTransaction } = await loadControllers();
+    return updateTransaction(req, res, next);
+  } catch (e) { next(e); }
+});
 
-router.get("/reports/charts", (req, res) => {
-  res.json({ message: "Dados para gráficos - implementar (Helen)" })
-})
+router.delete("/transactions/:id", async (req, res, next) => {
+  try {
+    const { deleteTransaction } = await loadControllers();
+    return deleteTransaction(req, res, next);
+  } catch (e) { next(e); }
+});
 
-router.get("/summary", (req, res) => {
-  res.json({ message: "Resumo financeiro - implementar (Helen)" })
-})
+// Relatórios
+router.get("/summary", async (req, res, next) => {
+  try {
+    const { getSummary } = await loadControllers();
+    return getSummary(req, res, next);
+  } catch (e) { next(e); }
+});
 
-module.exports = router
+router.get("/summary/by-category", async (req, res, next) => {
+  try {
+    const { getSummaryByCategory } = await loadControllers();
+    return getSummaryByCategory(req, res, next);
+  } catch (e) { next(e); }
+});
+
+module.exports = router;

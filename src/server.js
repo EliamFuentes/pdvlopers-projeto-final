@@ -14,27 +14,37 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ---------- Helpers ----------
-function requireOne(...paths) {
+function tryRequire(...paths) {
   for (const p of paths) {
-    try { return require(p); } catch (_) {}
+    try {
+      return require(p);
+    } catch (e) {
+      // se for outro erro que não seja "módulo não encontrado", mostre
+      if (e.code !== "MODULE_NOT_FOUND") {
+        console.warn(`[routes] Falha carregando ${p}:`, e.message);
+      }
+    }
   }
-  throw new Error(`Não foi possível carregar nenhum dos módulos: ${paths.join(", ")}`);
+  return null; // não achou nenhum
 }
+const unwrapDefault = (m) => (m && m.__esModule && m.default ? m.default : m);
 
 // ---------- Segurança / Infra ----------
-app.use(helmet()); // se o Swagger reclamar de CSP, use: helmet({ contentSecurityPolicy: false })
+app.use(helmet()); // se o Swagger reclamar de CSP: helmet({ contentSecurityPolicy: false })
 app.use(compression());
 
-// CORS (suporta múltiplas origens via FRONTEND_URL=dom1,dom2)
+// CORS (múltiplas origens via FRONTEND_URL=dom1,dom2)
 const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3001")
   .split(",")
-  .map(s => s.trim())
+  .map((s) => s.trim())
   .filter(Boolean);
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 // Rate limiting global
 const limiter = rateLimit({
@@ -52,7 +62,7 @@ app.use(express.urlencoded({ extended: true }));
 swaggerSetup(app);
 
 // ---------- Health / Root ----------
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({
     status: "OK",
     timestamp: new Date().toISOString(),
@@ -60,8 +70,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Rota raiz amigável (compat com back2clientes)
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("API está no ar! Consulte /health e /api-docs para detalhes.");
 });
 
@@ -69,17 +78,34 @@ app.get("/", (req, res) => {
 const authRoutes = require("./routes/authRoutes");
 const loyaltyRoutes = require("./routes/loyaltyRoutes");
 const promotionRoutes = require("./routes/promotionRoutes");
-const financialRoutes = require("./routes/financialRoutes");
 
-// Compatibilidade: tenta carregar client routes de clientRoutes OU clienteRoutes
-const clientRoutes = requireOne("./routes/clientRoutes", "./routes/clienteRoutes");
+// Clients (compat: clientRoutes OU clienteRoutes)
+const clientRoutes = tryRequire("./routes/clientRoutes", "./routes/clienteRoutes");
+if (!clientRoutes) {
+  console.warn("[boot] Rotas de clientes não encontradas (clientRoutes/clienteRoutes).");
+} else {
+  app.use("/api/clients", clientRoutes); // canônico
+  app.use("/clientes", clientRoutes);    // compat
+}
 
 app.use("/api/auth", authRoutes);
-app.use("/api/clients", clientRoutes);    // caminho canônico
-app.use("/clientes", clientRoutes);        // compat com back2clientes
 app.use("/api/loyalty", loyaltyRoutes);
 app.use("/api/promotions", promotionRoutes);
-app.use("/api/financial", financialRoutes);
+
+// Financial (carrega se existir em algum dos caminhos)
+const financialModule = tryRequire(
+  "./routes/financialRoutes",       // CJS padrão do seu projeto
+  "./routes/FinancialRoutes",       // PascalCase
+  "./src/routes/FinancialRoutes",   // caso tenha vindo de outro server
+  "../src/routes/FinancialRoutes"
+);
+if (!financialModule) {
+  console.warn("[boot] Rotas financeiras não encontradas. Pulei /api/financial e /api/finance.");
+} else {
+  const financialRoutes = unwrapDefault(financialModule);
+  app.use("/api/financial", financialRoutes);
+  app.use("/api/finance", financialRoutes); // compat com branch back5financeiro
+}
 
 // ---------- Erros ----------
 app.use(notFound);
