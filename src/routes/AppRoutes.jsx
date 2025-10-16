@@ -1,37 +1,46 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { Home } from "../pages/Home";
-import { Clients } from "../pages/Clients";
-import { Finances } from "../pages/Finances";
-import Login from "../pages/Login";
-import ResetPassword from "../pages/ResetPassword";
-import PrivateRoute from "../components/PrivateRoute";
-import ForgotPassword from "../pages/ForgotPassword";
-import { Messages } from "../pages/Messages";
-import { Rewards } from "../pages/Rewards";
-import { Signup } from "../pages/Signup";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from '../pages/Login';
+import ForgotPassword from '../pages/ForgotPassword';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function AppRoutes() {
+const Dashboard = () => {
+  const { user, logout } = useAuth();
+  
   return (
-    <BrowserRouter>
+    <div style={{ padding: '20px' }}>
+      <h1>✅ Login funcionou!</h1>
+      <p>Usuário logado: {user?.email || 'Teste'}</p>
+      <button onClick={logout} style={{ padding: '10px 20px', marginTop: '10px' }}>
+        Logout
+      </button>
+    </div>
+  );
+};
+
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
+
+const AppRoutes = () => {
+  return (
+    <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route
-          path="/"
+        <Route 
+          path="/dashboard" 
           element={
             <PrivateRoute>
-              <Home />
+              <Dashboard />
             </PrivateRoute>
-          }
+          } 
         />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/finances" element={<Finances />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/rewards" element={<Rewards />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-}
+};
+
+export default AppRoutes;
