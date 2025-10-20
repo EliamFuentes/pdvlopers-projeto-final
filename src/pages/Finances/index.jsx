@@ -46,6 +46,12 @@ export function Finances() {
   const saldo = transacoesMesAtual.reduce((acc, t) => acc + t.amount, 0);
   const totalTransacoes = transacoesMesAtual.length;
 
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+
   // TABS
   const buttons = [
     { id: 'transacoes', label: "Transações" },

@@ -18,7 +18,7 @@ export function Messages() {
   const buttons = [
     { id: "mensagens", label: "Enviar mensagens" },
     { id: "aniversariantes", label: "Aniversariantes" },
-    { id: "historico", label: "Histórico" },
+    // { id: "historico", label: "Histórico" },
   ];
 
   const currentMonth = new Date().getMonth(); // Janeiro = 0, Fevereiro = 1, ...
