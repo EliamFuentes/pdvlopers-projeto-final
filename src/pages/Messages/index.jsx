@@ -21,7 +21,6 @@ export function Messages() {
     { id: "historico", label: "Histórico" },
   ];
 
-<<<<<<< HEAD
   const currentMonth = new Date().getMonth(); // Janeiro = 0, Fevereiro = 1, ...
 
   const aniversariantesDoMes = clients.filter(client => {
