@@ -4,11 +4,38 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
 });
 
+// request interceptor: adiciona auth e log
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
+  console.log(
+    "[API] request:",
+    (config.method || "GET").toUpperCase(),
+    config.baseURL + config.url,
+    "params:",
+    config.params,
+    "data:",
+    config.data
+  );
   return config;
 });
+
+// response interceptor: log e tratamento de erro padronizado
+api.interceptors.response.use(
+  (res) => {
+    console.log("[API] response:", res.status, res.config.url);
+    return res;
+  },
+  (err) => {
+    console.error(
+      "[API] response error:",
+      err?.response?.status,
+      err?.response?.data,
+      err?.message
+    );
+    return Promise.reject(err.response?.data || err);
+  }
+);
 
 /**
  * Método genérico para chamadas à API
@@ -32,42 +59,33 @@ export const apiRequest = async (method, url, data = {}, params = {}) => {
   }
 };
 
-// Auth
-
 // Clients
 export const getClients = () => apiRequest("GET", "/clients");
 
-// Finances
+// Finances (GET helpers)
 export const getFinancialByDay = () => {
   const today = new Date().toISOString().split("T")[0];
-
-  return apiRequest(
-    "GET",
-    "/financial/transactions",
-    {},
-    { from: today, to: today }
-  );
+  return apiRequest("GET", "/financial/transactions", {}, { from: today, to: today });
 };
 
 export const getFinancialByMonth = () => {
   const now = new Date();
-  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
-    .toISOString()
-    .split("T")[0];
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-    .toISOString()
-    .split("T")[0];
-
-  return apiRequest(
-    "GET",
-    "/financial/transactions",
-    {},
-    { from: firstDay, to: lastDay }
-  );
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0];
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split("T")[0];
+  return apiRequest("GET", "/financial/transactions", {}, { from: firstDay, to: lastDay });
 };
 
-export const getFinancialAll = () =>
-  apiRequest("GET", "/financial/transactions");
+export const getFinancialAll = () => apiRequest("GET", "/financial/transactions");
+
+// --- CRUD helpers for transactions ---
+export const createTransaction = (payload) =>
+  apiRequest("POST", "/financial/transactions", payload);
+
+export const updateTransaction = (id, payload) =>
+  apiRequest("PATCH", `/financial/transactions/${id}`, payload);
+
+export const deleteTransaction = (id) =>
+  apiRequest("DELETE", `/financial/transactions/${id}`);
 
 // Loyalty
 export const getLoyaltyHistory = (id) =>
@@ -75,5 +93,8 @@ export const getLoyaltyHistory = (id) =>
 
 // Promotions
 export const getPromotions = () => apiRequest("GET", "/promotions");
+
+// Categories 
+export const getCategories = () => apiRequest("GET", "/financial/categories");
 
 export default api;

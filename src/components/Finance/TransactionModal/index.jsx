@@ -1,9 +1,11 @@
+ 
 import { useState } from "react";
-import styles from './TransactionModal.module.css'
+import styles from './TransactionModal.module.css';
 import { Header } from "../Header";
 import clientsData from '../../../data/mockClients.json'
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { createTransaction } from "../../../services/api";
 
 export function TransactionModal({ onSave, onClose }) {
     const [formData, setFormData] = useState({
@@ -17,22 +19,40 @@ export function TransactionModal({ onSave, onClose }) {
     const [somarPontos, setSomarPontos] = useState("não");
     const [cpfCliente, setCpfCliente] = useState("");
     const [selectedClient, setSelectedClient] = useState(null);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        const amountValue = Number(formData.amount);
-        const newTransaction = {
-            id: Date.now(),
-            ...formData,
-            amount: formData.type === "saida" ? -Math.abs(amountValue) : Math.abs(amountValue),
-            cliente: somarPontos === "sim" ? selectedClient : null
-        };
+        try {
+            const amountValue = Number(formData.amount);
 
-        console.log("Nova transação:", newTransaction);
-        onSave(newTransaction);
-        onClose();
+            const newTransaction = {
+                ...formData,
+                amount: formData.type === "saida" ? -Math.abs(amountValue) : Math.abs(amountValue),
+                cliente: somarPontos === "sim" ? selectedClient : null,
+            };
+
+            console.log("Nova transação:", newTransaction);
+
+            // ✅ Envia para o backend
+            const response = await createTransaction(newTransaction);
+            console.log("Transação registrada com sucesso:", response);
+
+            alert("Transação registrada com sucesso!");
+
+            // Atualiza o estado do pai (opcional)
+            if (onSave) onSave(newTransaction);
+
+            onClose();
+        } catch (error) {
+            console.error("Erro ao registrar transação:", error);
+            alert("Erro ao registrar transação. Verifique o console.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleBuscarCliente = () => {
@@ -53,7 +73,6 @@ export function TransactionModal({ onSave, onClose }) {
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
-
                     {/* Somar Pontos */}
                     <div className={styles.field}>
                         <label>Deseja somar pontos?</label>
@@ -90,10 +109,15 @@ export function TransactionModal({ onSave, onClose }) {
                                     value={cpfCliente}
                                     onChange={(e) => setCpfCliente(e.target.value)}
                                 />
-                                <button className={styles.buttonSearchClient} type="button" onClick={handleBuscarCliente}><FaSearch /></button>
+                                <button
+                                    className={styles.buttonSearchClient}
+                                    type="button"
+                                    onClick={handleBuscarCliente}
+                                >
+                                    <FaSearch />
+                                </button>
                             </div>
 
-                            {/* Botão para cadastrar cliente */}
                             <button
                                 type="button"
                                 className={styles.buttonAddClient}
@@ -113,15 +137,15 @@ export function TransactionModal({ onSave, onClose }) {
                         </div>
                     )}
 
-
                     {/* Tipo */}
                     <div className={styles.field}>
                         <label>Tipo</label>
                         <select
                             value={formData.type}
                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                            required
                         >
-                            <option value="" disabled selected>Selecione o tipo</option>
+                            <option value="" disabled>Selecione o tipo</option>
                             <option value="entrada">Entrada</option>
                             <option value="saida">Saída</option>
                         </select>
@@ -180,8 +204,12 @@ export function TransactionModal({ onSave, onClose }) {
 
                     {/* Botões */}
                     <div className={styles.buttons}>
-                        <button type="button" className={styles.cancel} onClick={onClose}>Cancelar</button>
-                        <button type="submit" className={styles.save}>Registrar</button>
+                        <button type="button" className={styles.cancel} onClick={onClose} disabled={loading}>
+                            Cancelar
+                        </button>
+                        <button type="submit" className={styles.save} disabled={loading}>
+                            {loading ? "Registrando..." : "Registrar"}
+                        </button>
                     </div>
                 </form>
             </div>

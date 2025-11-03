@@ -9,7 +9,7 @@ import {
   ShoppingCart,
   LogOut,
 } from "lucide-react";
-import styles from "./Sidebar.module.css";
+import styles from "./sidebar.module.css";
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
