@@ -1,6 +1,4 @@
-﻿:root{
-  --border: #e2e8f0;
-}
+﻿:root { /* removed local border; using global variables */ }
 
 *{
   margin: 0;
@@ -8,7 +6,7 @@
 }
 
 .container {
-  background-color: white;
+  background-color: var(--card);
   padding: 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid var(--border);
@@ -27,7 +25,7 @@
 }
 
 .subtitle {
-  color: rgb(107 114 128);
+  color: var(--muted-foreground);
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
@@ -46,8 +44,8 @@
 .itemContent {
   display: flex;
   justify-content: space-between;
-  background-color: #FFFFFF;
-  border: 1px solid #E5E5E5;
+  background-color: var(--card);
+  border: 1px solid var(--border);
   padding: 20px;
   border-radius: 15px;
 
@@ -60,14 +58,14 @@
 }
 
 .backgroundIcon{
-  background-color: #DBFCE7;
+  background-color: var(--card-blur);
   padding: 12px;
   border-radius: 100px;
   display: inline-flex;
   align-items: center;
 }
 .icon{
-  color: #0EAC49;
+  color: var(--chart-2);
   height: 1.1rem;
   width: 1.1rem;
 
@@ -78,7 +76,7 @@
 }
 
 .reward {
-  color: #737785;
+  color: var(--muted-foreground);
   font-size: 15px;
 }
 
@@ -87,10 +85,10 @@
 }
 
 .points {
-  color: rgb(239 68 68);
+  color: var(--destructive);
   font-weight: 600;
 }
 
 .date {
-  color: rgb(107 114 128);
+  color: var(--muted-foreground);
 }

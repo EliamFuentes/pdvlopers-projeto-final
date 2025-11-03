@@ -1,11 +1,4 @@
-﻿:root{
-  /* Cores da Paleta */
-  --yellowPalette: #ffb60b;
-  --orangePalette: #fb5607;
-  --pinkPalette: #ff006e;
-  --brownPallete: #523a34;
-  --bluePallete: #3a86ff;
-}
+﻿/* rely on global theme variables from src/styles/global.css */
 
 .overlay {
   position: fixed;
@@ -22,9 +15,9 @@
 }
 
 .modal {
-  background: white;
+  background: var(--card);
   border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
@@ -48,14 +41,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 
 .title {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  color: #1f2937;
+  color: var(--card-foreground);
 }
 
 .closeButton {
@@ -64,13 +57,13 @@
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 6px;
-  color: #6b7280;
+  color: var(--muted-foreground);
   transition: all 0.2s;
 }
 
 .closeButton:hover {
-  background-color: #f3f4f6;
-  color: #374151;
+  background-color: var(--card-blur);
+  color: var(--card-foreground);
 }
 
 .content {
@@ -84,8 +77,8 @@
 }
 
 .imagePlaceholder {
-  color: #d1d5db;
-  background-color: #f9fafb;
+  color: var(--muted-foreground);
+  background-color: var(--card-blur);
   padding: 4rem;
   border-radius: 12px;
 }
@@ -97,7 +90,7 @@
 .rewardName {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--card-foreground);
   margin-bottom: 1rem;
 }
 
@@ -109,8 +102,8 @@
 }
 
 .statusAvailable {
-  background-color: black;
-  color: white;
+  background-color: var(--sidebar-primary);
+  color: var(--sidebar-primary-foreground);
   cursor: pointer;
   border: none;
 }
@@ -123,8 +116,8 @@
 }
 
 .statusUnavailable {
-  background-color:  #ffffff;
-  color: #B3B3B4;
+  background-color: var(--card);
+  color: var(--muted-foreground);
   cursor: not-allowed;
   box-shadow: 0px 0.5px 4px rgba(0, 0, 0, 0.1);
 }
@@ -133,8 +126,8 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  background-color: #f3f4f6;
-  color: #374151;
+  background-color: var(--card-blur);
+  color: var(--card-foreground);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.875rem;
@@ -142,7 +135,7 @@
 }
 
 .pointsSection {
-  background-color: #f0f9ff;
+  background-color: var(--card-blur);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -150,7 +143,7 @@
 
 .pointsLabel {
   display: block;
-  color: #64748b;
+  color: var(--muted-foreground);
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
 }
@@ -158,7 +151,7 @@
 .pointsValue {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0ea5e9;
+  color: var(--chart-4);
 }
 
 .descriptionSection {
@@ -169,12 +162,12 @@
 .descriptionSection h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--card-foreground);
   margin-bottom: 0.5rem;
 }
 
 .descriptionSection p {
-  color: #6b7280;
+  color: var(--muted-foreground);
   line-height: 1.5;
 }
 
@@ -183,7 +176,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--muted-foreground);
   margin-bottom: 1.5rem;
 }
 
@@ -194,33 +187,33 @@
 }
 
 .cancelButton {
-  background-color: var(--brownPallete);
-  color: white;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: filter 0.12s;
 }
 
 .cancelButton:hover {
-  background-color: #3d2b27;
+  filter: brightness(0.95);
 }
 
 .redeemButton {
-  background-color: var(--bluePallete);
-  color: white;
+  background-color: var(--chart-4);
+  color: var(--popover-foreground);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: filter 0.12s;
 }
 
 .redeemButton:hover {
-  background-color: #1b64da;
+  filter: brightness(0.95);
 }
 
 @media (max-width: 640px) {

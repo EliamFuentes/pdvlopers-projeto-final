@@ -1,15 +1,14 @@
 .rewards{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rewards-container {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: inherit;
 }
 
 .rewards-link.active {
   font-weight: 600;
-  color: #2563eb;
+  color: var(--chart-4);
 }

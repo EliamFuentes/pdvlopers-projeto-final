@@ -1,13 +1,4 @@
-﻿:root{
-  --subtitle: #857373;
-
-  /* Cores da Paleta */
-  --yellowPalette: #ffb60b;
-  --orangePalette: #fb5607;
-  --pinkPalette: #ff006e;
-  --brownPallete: #523a34;
-  --bluePallete: #3a86ff;
-}
+﻿:root{ /* using global theme variables */ }
 .container {
   width: 100%;
   max-width: 1200px;
@@ -45,7 +36,7 @@
   align-items: center;
   gap: 0.8125rem;
   padding: 8px 16px;
-  background-color: black;
+  background-color: var(--sidebar-primary);
   border-radius: 10px;
   cursor: pointer;
   white-space: noWrap;
@@ -53,13 +44,13 @@
 
 .button {
   background:none;
-  color: white;
+  color: var(--sidebar-primary-foreground);
   border: none;
   font-weight: 500;
 }
 
 .newPromotionButton:hover {
-  background-color: rgb(44, 44, 44);
+  background-color: var(--accent);
 }
 
 .icon {
@@ -76,10 +67,10 @@
 }
 
 .promotionCard {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   padding: 1.5rem;
   border-radius: 0.9rem;
-  background-color: #FFFFFF;
+  background-color: var(--card);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -103,14 +94,14 @@
 .promotionDescription {
   margin-top: 0;
   font-size: 0.9375rem; /* 15px*/
-  color: var(--subtitle);
+  color: var(--muted-foreground);
 }
 
 .promotionStatus{
   display: flex;
   align-items: center;
-  background-color: black;
-  color: white;
+  background-color: var(--sidebar-primary);
+  color: var(--sidebar-primary-foreground);
   font-size: 0.75rem;
   padding: 0.4rem;
   height: 1.25rem;
@@ -132,7 +123,7 @@
 }
 .segment{
   font-weight: 600;
-  color: rgb(23, 23, 23);
+  color: var(--card-foreground);
 }
 
 .validUntil{
@@ -147,26 +138,26 @@
 
 /* Botões */
 .editButton {
-  background-color:#FFFFFF;
+  background-color: var(--card);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.144);
-  color: var(--bluePallete);
+  color: var(--chart-4);
   padding: 0.21rem 0.75rem;
-  border: 1px solid var(--bluePallete);
+  border: 1px solid var(--chart-4);
   border-radius: 0.5625rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
 
 .editButton:hover {
-  background-color: #3a86ff;
-  color: white;
+  background-color: var(--chart-4);
+  color: var(--popover-foreground);
   border: none;
 }
 
 .pauseButton {
-  background-color: #FFFFFF;
-  color: var(--brownPallete); 
-  border: 1px solid var(--brownPallete);
+  background-color: var(--card);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.144);
   padding: 0.21rem 0.75rem;
   border-radius: 0.5625rem;
@@ -176,17 +167,17 @@
 }
 
 .pauseButton:hover {
-  background-color: #523a34; 
-   color: white;
+  background-color: var(--secondary);
+   color: var(--secondary-foreground);
   border: none;
 }
 
 /* Botão de Reativar */
 .activateButton {
-  background-color: #FFFFFF;
+  background-color: var(--card);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.144);
-  color: var(--orangePalette);
-  border: 1px solid var(--orangePalette);
+  color: var(--chart-2);
+  border: 1px solid var(--chart-2);
   padding: 0.21rem 0.75rem;
   border-radius: 0.5625rem;
   font-size: 0.875rem;
@@ -195,7 +186,7 @@
 }
 
 .activateButton:hover {
-  background-color: #fb5607;
-  color: white;
+  background-color: var(--chart-2);
+  color: var(--popover-foreground);
   border: none;
 }
